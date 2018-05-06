@@ -28,7 +28,7 @@ function _window(title,borderless,x,y,height,width)
 	this.title = title;
 	this.x = x || 100
 	this.y = y || 100;
-	this.height = heigth || 400;
+	this.height = height || 400;
 	this.width = width || 600;
 	this.content = document.createElement("div");
 	this.borderless = borderless;
