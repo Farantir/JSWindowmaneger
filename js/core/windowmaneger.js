@@ -1,13 +1,3 @@
-/*********************************/
-/*Initialisation an debug segment*/
-/*********************************/
-$("loading_icon").style.display = "none";
-style = new default_style();
-window_to_drag = null;
-
-k = new _window("test");
-k.display();
-
 /*******************************************/
 /*functions for window creation and styling*/
 /*******************************************/
@@ -25,11 +15,18 @@ function default_style()
 /*funcion for creating a new window*/
 function _window(title,borderless,x,y,height,width)
 {
-	this.title = title;
-	this.x = x || 100
-	this.y = y || 100;
 	this.height = height || 400;
 	this.width = width || 600;
+	
+	if(x == null) x = window.innerWidth/2 - this.width/2;
+	if(y == null) y = window.innerHeight/2 - this.height/2;
+	
+	if(x<0) x = 0;
+	if(y<0) y = 0;
+	
+	this.title = title;
+	this.x = x;
+	this.y = y;
 	this.content = document.createElement("div");
 	this.borderless = borderless;
 	this.buttons =  [close_button(),maximize_button(),minimize_button()];
@@ -39,6 +36,9 @@ function _window(title,borderless,x,y,height,width)
 		/*creating the window*/
 		this.container = document.createElement("div");
 		this.container.window = this;
+		this.container.classList.add("window");
+		this.container.can_above = function(target){return true;};
+		if(!this.canresize) this.container.can_above = function(target){return false;};
 		if(!this.borderless)
 		{
 			this.container.classList.add("window_border");
@@ -52,27 +52,36 @@ function _window(title,borderless,x,y,height,width)
 			tile_text.window = this;
 			for(button of this.buttons) titlebar.appendChild(button);	
 			this.container.appendChild(titlebar);		
+			
+			titlebar.addEventListener("mousedown",window_border_click);
 		}
 	
-		document.body.appendChild(this.container);
-		this.container.style.top = this.x + "px";
-		this.container.style.left = this.y + "px";
+		$("window_container").prepend(this.container);
+		set_window_on_top(this.container)
+		
+		this.container.style.top = this.y + "px";
+		this.container.style.left = this.x + "px";
 		this.container.style.height = this.height + "px";
 		this.container.style.width = this.width + "px";
 		
-		this.container.addEventListener("mousedown",window_click);
+		this.container.addEventListener("mousedown",window_click,true);
 	}
 }
 
 /*function to fire if window gets selected*/
-function window_click(e)
+function window_border_click(e)
 {
-    window_to_drag = e.target.window.container;
+    window_to_drag = this.window.container;
     window_to_drag.offsetx = e.pageX - window_to_drag.offsetLeft; 
     window_to_drag.offsety = e.pageY - window_to_drag.offsetTop;
     document.addEventListener('mousemove', move_window);
 
     e.stopPropagation();
+}
+
+function window_click(e)
+{
+	set_window_on_top(this);	
 }
 
 /*requred for moving widows around*/
@@ -114,7 +123,7 @@ function minimize_button()
 
 function minimize_button_click(e)
 {
-	var to_min = e.target.parentNode.window.container;
+	var to_min = this.parentNode.window.container;
 	to_min.style.display = "none"
 	e.stopPropagation();
 }
@@ -131,7 +140,7 @@ function maximize_button()
 
 function maximize_button_click(e)
 {
-	toggle_maximize(e.target.parentNode.window.container);
+	toggle_maximize(this.parentNode.window.container);
 	e.stopPropagation();
 }
 
@@ -147,7 +156,7 @@ function close_button()
 
 function close_button_click(e)
 {
-	var to_del = e.target.parentNode.window.container;
+	var to_del = this.parentNode.window.container;
 	to_del.parentNode.removeChild(to_del);
 	e.stopPropagation();
 }
@@ -208,7 +217,23 @@ function move_window(e)
 
 /*Handeling the "on top" functionality*/
 /*(setting a selected oder created window on top)*/
-
-
-/*Events for window communication*/
-//var focus_switch = new CustomEvent("focus_switch",{evoked_by:})
+function set_window_on_top(target)
+{
+	var i = 0;
+	while(target.parentNode.childNodes[i])
+	{
+		if(target.parentNode.childNodes[i].nodeType == Node.ELEMENT_NODE)
+		{	
+			if(target.parentNode.childNodes[i] == target)
+			{
+				return;
+			}
+			if(target.parentNode.childNodes[i].can_above(target))
+			{
+				insertBefore(target,target.parentNode.childNodes[i])
+				return;
+			}
+		}
+		i++;
+	}
+}

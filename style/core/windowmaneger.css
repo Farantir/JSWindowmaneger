@@ -1,6 +1,24 @@
+body
+{
+	overflow:hidden;
+	margin:0px;
+	padding:0px;
+}
+
+#window_container
+{
+	overflow:hidden;
+	margin:0px;
+	padding:0px;
+}
+
+.window
+{
+		position:absolute;
+}
+
 .window_border
 {
-	position:absolute;
   border: 2px solid red;
   border-radius: 2px;
 	background-color:blue;
@@ -24,3 +42,4 @@
 	background-color:blue;
 	float:right;
 }
+
