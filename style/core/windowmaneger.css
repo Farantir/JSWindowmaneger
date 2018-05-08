@@ -1,5 +1,7 @@
 :root {
   --window_border_color: #484c51;
+  --window_title_color: #ffffff;
+  --window_background_color: #f0f0f0;
 }
 
 body
@@ -23,9 +25,14 @@ body
 
 .window_border
 {
-  border: 2px solid #5a5f66;
+  border: 2px solid var(--window_border_color);
   border-radius: 2px;
-	background-color:blue;
+	background-color: var(--window_background_color);
+}
+
+.window_title_text
+{
+   color: var(--window_title_color);
 }
 
 .window_title_bar div
@@ -35,15 +42,25 @@ body
 
 .window_title_bar
 {
-	background-color:#5a5f66;
+	background-color:var(--window_border_color);
+  border-bottom: 2px solid var(--window_border_color);
 }
 
 .window_button
 {
-	height:10px;
-	width:10px;
-	margin:5px;
-	background-color:blue;
+	height:15px;
+	width:15px;
+	margin:3px;
+	float:right;
+}
+
+.window_button:hover
+{
+	height:15px;
+	width:15px;
+	margin:3px;
+  filter: brightness(200%);
+  border-radius: 50%;
 	float:right;
 }
 

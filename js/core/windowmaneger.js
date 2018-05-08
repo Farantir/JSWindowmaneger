@@ -7,9 +7,9 @@ function $(x){return document.getElementById(x)}
 /*Default style*/
 function default_style()
 {
-	this.minimize_button = "icons/default_style/close-icon.svg";
+	this.minimize_button = "icons/default_style/min-icon.svg";
 	this.maximize_button = "icons/default_style/max-icon.svg";
-	this.close_button = "icons/default_style/min-icon.svg";
+	this.close_button = "icons/default_style/close-icon.svg";
 }
 
 /*funcion for creating a new window*/
@@ -31,6 +31,8 @@ function _window(title,borderless,x,y,height,width)
 	this.borderless = borderless;
 	this.buttons =  [close_button(),maximize_button(),minimize_button()];
 	this.canresize = true;
+  this.always_on_top = false
+  this.visible_in_taskbar = true;
 	this.display = function()
 	{
 		/*creating the window*/
@@ -38,7 +40,7 @@ function _window(title,borderless,x,y,height,width)
 		this.container.window = this;
 		this.container.classList.add("window");
 		this.container.can_above = function(target){return true;};
-		if(!this.canresize) this.container.can_above = function(target){return false;};
+		if(this.always_on_top) this.container.can_above = function(target){return false;};
 		if(!this.borderless)
 		{
 			this.container.classList.add("window_border");
@@ -65,7 +67,11 @@ function _window(title,borderless,x,y,height,width)
 		this.container.style.width = this.width + "px";
 		
 		this.container.addEventListener("mousedown",window_click,true);
-	}
+    this.container.appendChild(this.content);
+
+    /*tell other windows about your existence*/
+    window_created(this.container);
+  }
 }
 
 /*function to fire if window gets selected*/
@@ -123,8 +129,7 @@ function minimize_button()
 
 function minimize_button_click(e)
 {
-	var to_min = this.parentNode.window.container;
-	to_min.style.display = "none"
+  toggle_min(this.parentNode.window.container)
 	e.stopPropagation();
 }
 
@@ -164,6 +169,13 @@ function close_button_click(e)
 /***********************************************************/
 /*functions for window behaviour control*/
 /*****************************************************************/
+
+/*toggles minimized state*/
+function toggle_min(target)
+{
+  if(target.style.display == "none") target.style.display = "";
+  else target.style.display = "none";
+}
 
 /*toggles fullscrenn mode*/
 function toggle_maximize(target)
@@ -219,7 +231,7 @@ function move_window(e)
 /*(setting a selected oder created window on top)*/
 function set_window_on_top(target)
 {
-	var i = 0;
+	var i = target.parentNode.childNodes.length-1;
 	while(target.parentNode.childNodes[i])
 	{
 		if(target.parentNode.childNodes[i].nodeType == Node.ELEMENT_NODE)
@@ -230,10 +242,27 @@ function set_window_on_top(target)
 			}
 			if(target.parentNode.childNodes[i].can_above(target))
 			{
-				insertBefore(target,target.parentNode.childNodes[i])
+				target.parentNode.insertBefore(target,target.parentNode.childNodes[i].nextSibling)
 				return;
 			}
 		}
-		i++;
+		i--;
 	}
+}
+
+/*Handeling the "to bottom" functionality*/
+/*(setting a window below all other windows)*/
+function set_window_on_bottom(target)
+{
+  target.parentNode.prepend(target);
+}
+
+/**************************************************************************************************/
+/*Functions for Inter Window communication*/
+/******************************************/
+
+notify_window_creation = [];
+function window_created(target)
+{
+  notify_window_creation.forEach((x)=>{x.window_created(target)});
 }
