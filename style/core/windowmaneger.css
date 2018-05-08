@@ -1,3 +1,7 @@
+:root {
+  --window_border_color: #484c51;
+}
+
 body
 {
 	overflow:hidden;
@@ -19,7 +23,7 @@ body
 
 .window_border
 {
-  border: 2px solid red;
+  border: 2px solid #5a5f66;
   border-radius: 2px;
 	background-color:blue;
 }
@@ -31,7 +35,7 @@ body
 
 .window_title_bar
 {
-	background-color:red;
+	background-color:#5a5f66;
 }
 
 .window_button

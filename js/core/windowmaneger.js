@@ -7,9 +7,9 @@ function $(x){return document.getElementById(x)}
 /*Default style*/
 function default_style()
 {
-	this.minimize_button = "";
-	this.maximize_button = "";
-	this.close_button = "";
+	this.minimize_button = "icons/default_style/close-icon.svg";
+	this.maximize_button = "icons/default_style/max-icon.svg";
+	this.close_button = "icons/default_style/min-icon.svg";
 }
 
 /*funcion for creating a new window*/
