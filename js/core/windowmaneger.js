@@ -59,18 +59,19 @@ function _window(title,borderless,x,y,height,width)
 		}
 	
 		$("window_container").prepend(this.container);
-		set_window_on_top(this.container)
 		
 		this.container.style.top = this.y + "px";
 		this.container.style.left = this.x + "px";
 		this.container.style.height = this.height + "px";
 		this.container.style.width = this.width + "px";
+		this.container.is_minimized = false;
 		
 		this.container.addEventListener("mousedown",window_click,true);
     this.container.appendChild(this.content);
 
     /*tell other windows about your existence*/
     window_created(this.container);
+    set_window_on_top(this.container);
   }
 }
 
@@ -97,23 +98,6 @@ document.onmouseup = function()
     window_to_drag = null;
 }
 
-function move_window(e) 
-{
-  x = e.clientX + document.documentElement.scrollLeft;
-  y = e.clientY + document.documentElement.scrollTop;
-
-  posy = (y - window_to_drag.offsety);
-  posx = (x - window_to_drag.offsetx);
-
-  window_to_drag.style.left = posx + "px";
- 	window_to_drag.style.top = posy + "px";
- 	
- 	/*quitting fullscreen on windowdrag*/
-	if(window_to_drag.is_maximized)
-	{
-		toggle_maximize(window_to_drag);
-	}
-}
 
 /*functions to create the window buttons*/
 /************************************************************************************/
@@ -162,6 +146,7 @@ function close_button()
 function close_button_click(e)
 {
 	var to_del = this.parentNode.window.container;
+	window_closed(to_del);
 	to_del.parentNode.removeChild(to_del);
 	e.stopPropagation();
 }
@@ -173,8 +158,16 @@ function close_button_click(e)
 /*toggles minimized state*/
 function toggle_min(target)
 {
-  if(target.style.display == "none") target.style.display = "";
-  else target.style.display = "none";
+  if(target.is_minimized == true)
+  {
+   target.style.display = "";
+   target.is_minimized = false;
+ 	}else 
+ 	{
+ 		target.style.display = "none"
+ 		target.is_minimized = true;
+	}
+	window_minimized(target);
 }
 
 /*toggles fullscrenn mode*/
@@ -216,7 +209,24 @@ function move_window(e)
 
   posy = (y - window_to_drag.offsety);
   posx = (x - window_to_drag.offsetx);
+  
+  /*Range checks ensure, that no window will "get lost" outside of its parent container*/
+  if(posx<(border_margin.left-window_to_drag.offsetWidth))
+  {
+  	posx = border_margin.left - offsetWidth
+	}else if(posx>window.innerWidth - border_margin.right)
+	{
+		posx=window.innerWidth-border_margin.right;
+	}
+	if(posy<(border_margin.top))
+  {
+  	posy = border_margin.top;
+	}else if(posy>window.innerHeight - border_margin.bottom)
+	{
+		posy=window.innerHeight - border_margin.bottom;
+	}
 
+	/*applying th new Window position*/
   window_to_drag.style.left = posx + "px";
  	window_to_drag.style.top = posy + "px";
  	
@@ -261,6 +271,11 @@ function set_window_on_bottom(target)
 /**************************************************************************************************/
 /*Functions for Inter Window communication*/
 /******************************************/
+border_margin = {};
+border_margin.top=0;
+border_margin.left=10;
+border_margin.right=10;
+border_margin.bottom=10;
 
 notify_window_creation = [];
 function window_created(target)
@@ -272,4 +287,16 @@ notify_window_focus = [];
 function window_focus(target)
 {
   notify_window_focus.forEach((x)=>{x.window_focus(target)});
+}
+
+notify_window_toggle_minimized = [];
+function window_minimized(target)
+{
+  notify_window_toggle_minimized.forEach((x)=>{x.window_minimized(target)});
+}
+
+notify_window_closed = [];
+function window_closed(target)
+{
+  notify_window_closed.forEach((x)=>{x.window_closed(target)});
 }

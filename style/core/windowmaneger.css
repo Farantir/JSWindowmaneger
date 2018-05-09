@@ -1,7 +1,9 @@
 :root {
   --window_border_color: #484c51;
-  --window_title_color: #ffffff;
+  --window_title_color: #c9cbcf;
   --window_background_color: #f0f0f0;
+ /* --window_border_color_aktive: #787f87;
+  --window_title_color_aktive: #ffffff;*/
 }
 
 body
@@ -45,6 +47,25 @@ body
 	background-color:var(--window_border_color);
   border-bottom: 2px solid var(--window_border_color);
 }
+/*
+.window_border.aktive
+{
+  border: 2px solid var(--window_border_color_aktive);
+  border-radius: 2px;
+	background-color: var(--window_background_color);
+}
+
+.window_title_text.aktive
+{
+   color: var(--window_title_color_aktive);
+}
+
+.window_title_bar.aktive
+{
+	background-color:var(--window_border_color);
+  border-bottom: 2px solid var(--window_border_color_aktive);
+}
+*/
 
 .window_button
 {

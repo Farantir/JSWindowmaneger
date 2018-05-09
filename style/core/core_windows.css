@@ -3,6 +3,7 @@
   --taskbar_window_border_highlight: #787f87;
   --taskbar_title_color: #c9cbcf;
   --taskbar_aktive_title_color: #f1f2f3;
+  --taskbar_inaktive_title_color: #787f87;
 }
 
 .window_taskbar
@@ -39,6 +40,13 @@
   border: 1px solid var(--taskbar_window_border_highlight);
   background: linear-gradient(#93989f, #484c51);
   color: var(--taskbar_aktive_title_color);
+}
+
+.taskbar_area_open_windows_open_window.minimized
+{
+  border: 1px solid var(--taskbar_window_border);
+  background: linear-gradient(#484c51, #242629);
+  color: var(--taskbar_inaktive_title_color);
 }
 
 .taskbar_area_open_windows

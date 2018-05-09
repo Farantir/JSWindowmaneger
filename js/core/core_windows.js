@@ -7,6 +7,7 @@ function create_taskbar()
   taskbar.visible_in_taskbar = false;
 
 	taskbar.display();
+	taskbar.container.removeEventListener("mousedown",window_click,true);
 	taskbar.container.classList.add("window_taskbar");
 	taskbar.container.style.width = "100%";
  	taskbar.container.style.top = "100%";
@@ -28,6 +29,7 @@ function create_taskbar()
         target_window.appendChild(document.createTextNode(string))
         open_windows.appendChild(target_window);
         target_window.target = target;
+        target_window.addEventListener("mousedown",taskbar_on_window_click);
     }
   }
   taskbar.container.window_focus = function(target)
@@ -37,10 +39,52 @@ function create_taskbar()
   		else x.classList.remove("aktive");
 		});
   }
+  taskbar.container.window_minimized = function(target)
+  {
+  	this.open_windows.childNodes.forEach((x)=>{
+  		if(x.target == target)
+  		{ 
+  			if(target.is_minimized) 
+  			{
+  				x.classList.add("minimized");
+  				x.classList.remove("aktive");
+				}
+  			else 
+  			{
+  				x.classList.remove("minimized");
+				}
+  		}
+		});
+  }
+  taskbar.container.window_closed = function(target)
+  {
+  	this.open_windows.childNodes.forEach((x)=>{
+  		if(x.target == target)
+  		{ 
+  			x.parentNode.removeChild(x);
+  		}
+		});
+  }
   notify_window_creation.push(taskbar.container);
 	notify_window_focus.push(taskbar.container);
+	notify_window_toggle_minimized.push(taskbar.container);
+	notify_window_closed.push(taskbar.container);
+	
+	border_margin.bottom += 30;
 }
 
+/*will be called, if window icon in taskbar is clicked*/
+function taskbar_on_window_click(e)
+{
+	if(this.classList.contains("aktive"))
+	{
+		toggle_min(this.target);
+	}else if(this.classList.contains("minimized"))
+	{
+		toggle_min(this.target);
+	}
+	set_window_on_top(this.target);
+}
 
 function create_desktop()
 {
