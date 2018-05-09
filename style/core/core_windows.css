@@ -19,13 +19,14 @@
 {
   float:left;
   margin-left:1px;
-  margin-right:1px;
+  margin-right:0px;
   margin-top: 14px;
   transform: translate(0%, -50%);
   border: 1px solid var(--taskbar_window_border);
   border-radius: 2px;
 	background: linear-gradient(#54585f, #242629);
   color: var(--taskbar_title_color);
+  padding: 5px;
 }
 
 .taskbar_area_open_windows_open_window:hover

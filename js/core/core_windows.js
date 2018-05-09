@@ -14,6 +14,7 @@ function create_taskbar()
   var open_windows = document.createElement("div");
   open_windows.classList.add("taskbar_area_open_windows");
   taskbar.content.appendChild(open_windows);
+  taskbar.container.open_windows = open_windows;
   
   taskbar.container.window_created = function(target)
   {
@@ -26,10 +27,18 @@ function create_taskbar()
         while(0<(19-string.length))  string += " ";
         target_window.appendChild(document.createTextNode(string))
         open_windows.appendChild(target_window);
+        target_window.target = target;
     }
   }
+  taskbar.container.window_focus = function(target)
+  {
+  	this.open_windows.childNodes.forEach((x)=>{
+  		if(x.target == target) x.classList.add("aktive");
+  		else x.classList.remove("aktive");
+		});
+  }
   notify_window_creation.push(taskbar.container);
-
+	notify_window_focus.push(taskbar.container);
 }
 
 

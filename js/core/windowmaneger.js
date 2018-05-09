@@ -231,6 +231,7 @@ function move_window(e)
 /*(setting a selected oder created window on top)*/
 function set_window_on_top(target)
 {
+	window_focus(target);
 	var i = target.parentNode.childNodes.length-1;
 	while(target.parentNode.childNodes[i])
 	{
@@ -265,4 +266,10 @@ notify_window_creation = [];
 function window_created(target)
 {
   notify_window_creation.forEach((x)=>{x.window_created(target)});
+}
+
+notify_window_focus = [];
+function window_focus(target)
+{
+  notify_window_focus.forEach((x)=>{x.window_focus(target)});
 }
