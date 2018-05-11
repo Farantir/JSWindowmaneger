@@ -1,7 +1,7 @@
 function create_taskbar()
 {
 	/*initialisation information*/
-	var taskbar = new _window("",true,0,0,30,0);
+	var taskbar = new _window("",true,0,0,25,0);
 	taskbar.canresize = false;
   taskbar.always_on_top = true;
   taskbar.visible_in_taskbar = false;
