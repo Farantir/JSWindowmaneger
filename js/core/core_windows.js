@@ -39,7 +39,7 @@ function create_taskbar()
   		else x.classList.remove("aktive");
 		});
   }
-  taskbar.container.window_minimized = function(target)
+  taskbar.container.window_toggle_minimized = function(target)
   {
   	this.open_windows.childNodes.forEach((x)=>{
   		if(x.target == target)
@@ -65,12 +65,12 @@ function create_taskbar()
   		}
 		});
   }
-  notify_window_creation.push(taskbar.container);
-	notify_window_focus.push(taskbar.container);
-	notify_window_toggle_minimized.push(taskbar.container);
-	notify_window_closed.push(taskbar.container);
+  observer.subscribe("window_created", taskbar.container);
+	observer.subscribe("window_focus",taskbar.container);
+	observer.subscribe("window_toggle_minimized", taskbar.container);
+	observer.subscribe("window_closed", taskbar.container);
 	
-	border_margin.bottom += 30;
+	border_margin.bottom += 25;
 }
 
 /*will be called, if window icon in taskbar is clicked*/

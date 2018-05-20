@@ -70,7 +70,7 @@ function _window(title,borderless,x,y,height,width)
     this.container.appendChild(this.content);
 
     /*tell other windows about your existence*/
-    window_created(this.container);
+    observer.notify("window_created",this.container);
     set_window_on_top(this.container);
   }
 }
@@ -167,7 +167,7 @@ function toggle_min(target)
  		target.style.display = "none"
  		target.is_minimized = true;
 	}
-	window_minimized(target);
+	observer.notify("window_toggle_minimized",target);
 }
 
 /*toggles fullscrenn mode*/
@@ -241,7 +241,7 @@ function move_window(e)
 /*(setting a selected oder created window on top)*/
 function set_window_on_top(target)
 {
-	window_focus(target);
+	observer.notify("window_focus",target);
 	var i = target.parentNode.childNodes.length-1;
 	while(target.parentNode.childNodes[i])
 	{
@@ -271,32 +271,47 @@ function set_window_on_bottom(target)
 /**************************************************************************************************/
 /*Functions for Inter Window communication*/
 /******************************************/
+/*artificail borders for windows*/
+/*this way, windows cant be */
+/*"lost" below e.g. the taskbar*/
 border_margin = {};
 border_margin.top=0;
 border_margin.left=10;
 border_margin.right=10;
 border_margin.bottom=10;
 
-notify_window_creation = [];
-function window_created(target)
+/*Observer for window mutations*/
+observer = {};
+observer.listen = {};
+observer.subscribe = function(observation_name, objekt_to_notify)
 {
-  notify_window_creation.forEach((x)=>{x.window_created(target)});
+	if(!observer.listen[observation_name]) observer.listen[observation_name] = [];
+	observer.listen[observation_name].push(objekt_to_notify);
+}
+observer.unsubscribe = function(observation_name, objekt_to_notify)
+{
+	if(!observer.listen[observation_name]) return;
+	observer.listen[observation_name].splice(observer.listen[observation_name].indexOf(objekt_to_notify),1);
 }
 
-notify_window_focus = [];
-function window_focus(target)
+observer.notify = function(observation_name, evoker)
 {
-  notify_window_focus.forEach((x)=>{x.window_focus(target)});
+	if(!observer.listen[observation_name]) return;
+	observer.listen[observation_name].forEach((x)=>{x[observation_name](evoker)});
 }
 
-notify_window_toggle_minimized = [];
-function window_minimized(target)
+/*Categorie manegement for Applicarions*/
+/*All applications*/
+applications = [];
+categories = [];
+
+/*single application*/
+function appliction(id,name,categories)
 {
-  notify_window_toggle_minimized.forEach((x)=>{x.window_minimized(target)});
+	this.name = name;
+	this.id = id;
+	categories.foreach((x)=>{
+		//if()
+	});
 }
 
-notify_window_closed = [];
-function window_closed(target)
-{
-  notify_window_closed.forEach((x)=>{x.window_closed(target)});
-}
