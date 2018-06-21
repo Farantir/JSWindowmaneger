@@ -71,6 +71,9 @@ function create_taskbar()
 	observer.subscribe("window_closed", taskbar.container);
 	
 	border_margin.bottom += 25;
+
+    /*code for creating the start menue*/
+    //todo
 }
 
 /*will be called, if window icon in taskbar is clicked*/

@@ -146,7 +146,7 @@ function close_button()
 function close_button_click(e)
 {
 	var to_del = this.parentNode.window.container;
-	window_closed(to_del);
+	observer.notify("window_closed", to_del);
 	to_del.parentNode.removeChild(to_del);
 	e.stopPropagation();
 }
