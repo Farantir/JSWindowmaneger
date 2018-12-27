@@ -10,6 +10,7 @@ function default_style()
 	this.minimize_button = "icons/default_style/min-icon.svg";
 	this.maximize_button = "icons/default_style/max-icon.svg";
 	this.close_button = "icons/default_style/close-icon.svg";
+  this.menu_button = "icons/default_style/menu-icon.svg";
 }
 
 /*funcion for creating a new window*/
@@ -146,7 +147,7 @@ function close_button()
 function close_button_click(e)
 {
 	var to_del = this.parentNode.window.container;
-	window_closed(to_del);
+	observer.notify("window_closed",to_del);
 	to_del.parentNode.removeChild(to_del);
 	e.stopPropagation();
 }

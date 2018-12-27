@@ -30,6 +30,19 @@
   padding: 4px;
 }
 
+.taskbar_area_start_menue
+{
+  float:left;
+  margin-left:3px;
+  margin-right:3px;
+  margin-top: 14px;
+  transform: translate(0%, -50%);
+  border: 0px;
+  color: var(--taskbar_title_color);
+  padding: 4px;
+
+}
+
 .taskbar_area_open_windows_open_window:hover
 {
   border: 1px solid var(--taskbar_window_border_highlight);
@@ -52,4 +65,25 @@
 .taskbar_area_open_windows
 {
   float:left;
+}
+
+.taskbar_menue_button
+{
+  float:left;
+  margin-left:1px;
+  margin-right:0px;
+  margin-top: 12px;
+  transform: translate(0%, -50%);
+  border: 1px solid var(--taskbar_window_border);
+  border-radius: 2px;
+	background: linear-gradient(#54585f, #242629);
+  color: var(--taskbar_title_color);
+  padding: 4px;
+}
+
+.taskbar_menue_button:hover
+{
+  border: 1px solid var(--taskbar_window_border_highlight);
+  background: linear-gradient(#93989f, #484c51);
+  color: var(--taskbar_aktive_title_color);
 }

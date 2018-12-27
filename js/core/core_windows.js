@@ -12,6 +12,24 @@ function create_taskbar()
 	taskbar.container.style.width = "100%";
  	taskbar.container.style.top = "100%";
 
+  /*creating the startmenu area and button*/
+  var start_menue = document.createElement("div");
+  start_menue.classList.add("taskbar_area_start_menue");
+  taskbar.content.appendChild(start_menue);
+  taskbar.container.start_menue = start_menue;
+	var start_button = document.createElement("img");
+	start_menue.classList.add("taskbar_menue_button");
+	//button.classList.add("window_button");
+	//button.addEventListener("mousedown",minimize_button_click);
+	start_button.src = style.menu_button;
+  taskbar.container.start_menue.appendChild(start_button);
+
+  /*function for the startmenu menu div*/
+  taskbar.taskmenue = new taskmenue();
+  start_button.taskmenue = taskbar.taskmenue;
+  start_button.onclick = function(){this.taskmenue.toggle();};
+
+  /*creating the aktive window controling fujctionalit of the taskbar*/
   var open_windows = document.createElement("div");
   open_windows.classList.add("taskbar_area_open_windows");
   taskbar.content.appendChild(open_windows);
@@ -84,6 +102,20 @@ function taskbar_on_window_click(e)
 		toggle_min(this.target);
 	}
 	set_window_on_top(this.target);
+}
+
+/*taskmenue div. excludet from taskbar for easy customizebility*/
+function taskmenue()
+{
+  /*creating the wrapper div vor the starmenu*/   
+  var start_menue = document.createElement("div");
+  start_menue.classList.add("start_menue"); 
+  this.start_menue = start_menue;
+
+  this.toggle = function()
+  {
+    console.log("bla");
+  }
 }
 
 function create_desktop()
