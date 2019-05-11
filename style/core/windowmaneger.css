@@ -40,12 +40,15 @@ body
 .window_title_bar div
 {
 	display: inline;
+
 }
 
 .window_title_bar
 {
 	background-color:var(--window_border_color);
   border-bottom: 2px solid var(--window_border_color);
+    user-select: none;
+    -moz-user-select: none;
 }
 /*
 .window_border.aktive

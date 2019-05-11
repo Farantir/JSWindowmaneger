@@ -20,7 +20,7 @@ function create_taskbar()
 	var start_button = document.createElement("img");
 	start_menue.classList.add("taskbar_menue_button");
 	//button.classList.add("window_button");
-	//button.addEventListener("mousedown",minimize_button_click);
+	//start_menue.addEventListener("mousedown",minimize_button_click);
 	start_button.src = style.menu_button;
   taskbar.container.start_menue.appendChild(start_button);
 

@@ -8,9 +8,9 @@ window_to_drag = null;
 create_taskbar();
 create_desktop();
 
-k = new _window("Ein Fenster mit einem sehr langen titel");
+k = new _window("Window with a very long title");
 k.display();
 
 
-k = new _window("kurtzer titel");
+k = new _window("short titel");
 k.display();
