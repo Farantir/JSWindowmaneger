@@ -4,5 +4,3 @@ The desing is based on the idea that all components (task bar, desktop packgroun
 are windows themselves.
 
 for example usage look in js/core/initialise.js
-
-a live demo of the unfinished projekt can be found [here](https://jhippe.de/JSWindowmaneger/)
